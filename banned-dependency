@@ -1,0 +1,168 @@
+#!/usr/bin/env node
+
+const fs = require("node:fs");
+const path = require("node:path");
+
+const command = process.argv[2];
+
+if (command !== "check") {
+  console.error("Usage: node banned-dependency check");
+  process.exit(2);
+}
+
+const repoRoot = __dirname;
+const packageJsonPath = path.join(repoRoot, "package.json");
+
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+
+const productionDependencyFields = [
+  "dependencies",
+  "optionalDependencies",
+  "peerDependencies",
+];
+
+const bannedCategories = [
+  {
+    category: "real payment/subscription",
+    patterns: [
+      /^@stripe\//,
+      /^stripe$/,
+      /^braintree$/,
+      /^paypal-rest-sdk$/,
+      /^@paypal\//,
+      /^paddle(js)?$/,
+      /^chargebee$/,
+      /^@revenuecat\//,
+      /^revenuecat$/,
+      /^razorpay$/,
+      /^square$/,
+      /^@adyen\//,
+    ],
+  },
+  {
+    category: "login/auth",
+    patterns: [
+      /^next-auth$/,
+      /^@auth\//,
+      /^auth0$/,
+      /^@auth0\//,
+      /^@clerk\//,
+      /^clerk-sdk-node$/,
+      /^firebase$/,
+      /^@firebase\//,
+      /^@supabase\//,
+      /^passport$/,
+      /^passport-/,
+      /^lucia$/,
+      /^aws-amplify$/,
+      /^amazon-cognito-identity-js$/,
+    ],
+  },
+  {
+    category: "backend/API/database",
+    patterns: [
+      /^express$/,
+      /^koa$/,
+      /^fastify$/,
+      /^@hapi\//,
+      /^@nestjs\//,
+      /^prisma$/,
+      /^@prisma\//,
+      /^drizzle-orm$/,
+      /^mongoose$/,
+      /^sequelize$/,
+      /^pg$/,
+      /^mysql2?$/,
+      /^sqlite3$/,
+      /^better-sqlite3$/,
+      /^mongodb$/,
+      /^redis$/,
+      /^ioredis$/,
+      /^@neondatabase\//,
+      /^@planetscale\//,
+      /^graphql$/,
+      /^apollo-server/,
+      /^@apollo\//,
+    ],
+  },
+  {
+    category: "Facebook SDK/Pixel/CAPI",
+    patterns: [
+      /^facebook-nodejs-business-sdk$/,
+      /^fb$/,
+      /^react-facebook-pixel$/,
+      /^@facebook\//,
+      /^facebook-pixel$/,
+      /^meta-pixel$/,
+    ],
+  },
+  {
+    category: "analytics",
+    patterns: [
+      /^@vercel\/analytics$/,
+      /^mixpanel-browser$/,
+      /^mixpanel$/,
+      /^analytics-node$/,
+      /^@segment\//,
+      /^amplitude-js$/,
+      /^@amplitude\//,
+      /^posthog-js$/,
+      /^posthog-node$/,
+      /^react-ga$/,
+      /^react-ga4$/,
+      /^google-analytics$/,
+      /^gtag$/,
+      /^plausible-tracker$/,
+      /^@rudderstack\//,
+      /^hotjar$/,
+    ],
+  },
+  {
+    category: "video infra",
+    patterns: [
+      /^video\.js$/,
+      /^hls\.js$/,
+      /^dashjs$/,
+      /^mux-embed$/,
+      /^@mux\//,
+      /^livepeer$/,
+      /^@livepeer\//,
+      /^jwplayer$/,
+      /^vimeo$/,
+      /^youtube-player$/,
+    ],
+  },
+];
+
+function matchingCategory(dependencyName) {
+  return bannedCategories.find(({ patterns }) =>
+    patterns.some((pattern) => pattern.test(dependencyName)),
+  );
+}
+
+const checkedDependencies = productionDependencyFields.flatMap((field) =>
+  Object.keys(packageJson[field] ?? {}).map((name) => ({ field, name })),
+);
+
+const violations = checkedDependencies
+  .map(({ field, name }) => ({
+    field,
+    name,
+    category: matchingCategory(name)?.category,
+  }))
+  .filter((dependency) => dependency.category !== undefined);
+
+if (violations.length > 0) {
+  console.error("Banned production dependencies found:");
+  for (const violation of violations) {
+    console.error(
+      `- ${violation.name} (${violation.field}) matches ${violation.category}`,
+    );
+  }
+  process.exit(1);
+}
+
+const checkedNames = checkedDependencies.map(({ name }) => name).join(", ") || "none";
+console.log(
+  `Banned dependency check passed. Checked production dependency fields: ${productionDependencyFields.join(", ")}. Dependencies: ${checkedNames}.`,
+);
