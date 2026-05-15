@@ -132,4 +132,4 @@ ${JSON.stringify({
 writeFileSync(`${outDir}/comment.md`, comment);
 writeFileSync(`${outDir}/labels.json`, `${JSON.stringify({ add: labelsToAdd, remove: labelsToRemove, decision, state: machineState }, null, 2)}\n`);
 
-if (decision !== 'APPROVE') process.exitCode = 1;
+if (deterministicFailures || (hasClaudeSecret && decision !== 'APPROVE')) process.exitCode = 1;
