@@ -67,6 +67,9 @@
 - name: "type:chore"
   color: "C5DEF5"
   description: Maintenance or housekeeping.
+- name: "type:governance"
+  color: "5319E7"
+  description: Repository process, policy, or review workflow work.
 
 # Area
 - name: "area:frontend"
