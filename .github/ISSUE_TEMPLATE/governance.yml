@@ -1,0 +1,37 @@
+name: Governance change
+
+description: Request repository policy, label, template, CI, or review-process work.
+title: "[Governance]: "
+labels:
+  - "type: governance"
+  - "area: ci"
+  - "status: needs-triage"
+body:
+  - type: textarea
+    id: change
+    attributes:
+      label: Requested governance change
+      description: What process or repository metadata should change?
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why is this needed now?
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety constraints
+      options:
+        - label: This request does not apply branch protection, auto-merge, secrets, or release actions.
+          required: true
+        - label: Any pull_request_target workflow is metadata-only and does not checkout or run contributor code.
+          required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Suggested validation
+      placeholder: YAML validation, dry-run, or documentation review steps.

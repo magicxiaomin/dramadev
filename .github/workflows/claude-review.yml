@@ -1,0 +1,164 @@
+name: NovelHub-style PR Review Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: novelhub-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review-gate:
+    name: deterministic review gate
+    runs-on: ubuntu-latest
+    env:
+      HAS_ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' && 'true' || 'false' }}
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run deterministic local gates
+        id: gates
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .github/review-gate/logs
+          printf '[' > .github/review-gate/gate-results.json
+          first=1
+
+          run_gate() {
+            local name="$1"
+            local command="$2"
+            local logfile=".github/review-gate/logs/${name}.log"
+            echo "::group::${name}: ${command}"
+            bash -lc "${command}" 2>&1 | tee "${logfile}"
+            local status=${PIPESTATUS[0]}
+            echo "::endgroup::"
+
+            if [ "$first" -eq 0 ]; then printf ',' >> .github/review-gate/gate-results.json; fi
+            first=0
+            node -e "const [name, command, status, logfile]=process.argv.slice(1); process.stdout.write(JSON.stringify({ name, command, status:Number(status), log: logfile }));" \
+              "$name" "$command" "$status" "$logfile" >> .github/review-gate/gate-results.json
+            return 0
+          }
+
+          run_gate hard-stop-checks "node .github/scripts/review-gate-checks.mjs"
+          run_gate banned-deps "pnpm check:banned-deps"
+          run_gate unit-tests "pnpm test:unit"
+          run_gate lint "pnpm lint"
+          run_gate build "pnpm build"
+
+          printf ']\n' >> .github/review-gate/gate-results.json
+
+      - name: Build Claude review prompt
+        run: node .github/scripts/build-claude-review-prompt.mjs
+
+      - name: Run Claude Code review when secret is configured
+        if: env.HAS_ANTHROPIC_API_KEY == 'true'
+        shell: bash
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set +e
+          npm install -g @anthropic-ai/claude-code
+          claude -p "$(cat .github/review-gate/claude-review-prompt.md)" --output-format text > .github/review-gate/claude-review.md
+          echo "$?" > .github/review-gate/claude-exit-code.txt
+          exit 0
+
+      - name: Record missing Claude secret
+        if: env.HAS_ANTHROPIC_API_KEY != 'true'
+        run: |
+          mkdir -p .github/review-gate
+          echo "1" > .github/review-gate/claude-exit-code.txt
+
+      - name: Render machine verdict and PR comment
+        id: verdict
+        shell: bash
+        run: |
+          set +e
+          CLAUDE_REVIEW_EXIT_CODE="$(cat .github/review-gate/claude-exit-code.txt 2>/dev/null || echo 1)" node .github/scripts/render-review-comment.mjs
+          status=$?
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upsert PR comment and labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- dramadev-novelhub-review-gate -->';
+            const issue_number = context.payload.pull_request.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const body = fs.readFileSync('.github/review-gate/comment.md', 'utf8');
+            const labels = JSON.parse(fs.readFileSync('.github/review-gate/labels.json', 'utf8'));
+            const parsedDecision = body.match(/`REVIEW_DECISION: (APPROVE|REQUEST_CHANGES)`/)?.[1];
+            if (!parsedDecision) {
+              throw new Error('Machine verdict comment did not contain REVIEW_DECISION: APPROVE or REQUEST_CHANGES');
+            }
+
+            const existing = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const previous = existing.find((comment) => comment.user?.type === 'Bot' && comment.body?.includes(marker));
+            if (previous) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: previous.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+            const labelConfig = {
+              'claude-approved': { color: '0E8A16', description: 'NovelHub-style gate parsed APPROVE from Claude-backed review' },
+              'claude-changes-requested': { color: 'B60205', description: 'NovelHub-style gate parsed REQUEST_CHANGES' },
+              'needs-human-review': { color: 'D93F0B', description: 'Human review required before merge' },
+              'needs-human-merge': { color: '5319E7', description: 'Automated gates passed; human must merge' },
+              'needs-split': { color: 'FBCA04', description: 'PR exceeds review-gate size threshold' },
+            };
+
+            for (const [name, config] of Object.entries(labelConfig)) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+                await github.rest.issues.createLabel({ owner, repo, name, ...config });
+              }
+            }
+
+            for (const label of labels.remove || []) {
+              try {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number, name: label });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+              }
+            }
+            if ((labels.add || []).length) {
+              await github.rest.issues.addLabels({ owner, repo, issue_number, labels: labels.add });
+            }
+
+      - name: Enforce review gate status
+        if: steps.verdict.outputs.status != '0'
+        run: |
+          echo "NovelHub-style review gate requested changes. See PR comment for REVIEW_DECISION and hard-stop details."
+          exit 1

@@ -1,0 +1,51 @@
+"type: governance":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/**
+          - docs/*governance*.md
+          - docs/github-review-pipeline.md
+          - docs/claude-code-review-process.md
+          - docs/branch-protection-recommendation.md
+          - docs/bot-identity.md
+"type: docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**
+          - README.md
+          - acceptance/README.md
+"area: ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+          - .github/scripts/**
+          - .github/labeler.yml
+          - .github/labels.yml
+"area: acceptance":
+  - changed-files:
+      - any-glob-to-any-file:
+          - acceptance/**
+          - docs/acceptance-runbook.md
+"area: frontend":
+  - changed-files:
+      - any-glob-to-any-file:
+          - app/**
+          - src/**
+          - components/**
+          - styles/**
+"area: content":
+  - changed-files:
+      - any-glob-to-any-file:
+          - content/**
+          - data/**
+          - public/**
+"risk: low":
+  - changed-files:
+      - all-globs-to-all-files:
+          - docs/**
+          - .github/ISSUE_TEMPLATE/**
+          - .github/pull_request_template.md
+          - acceptance/README.md
+"priority: p0":
+  - head-branch:
+      - ^feat/p0-
+      - ^fix/p0-

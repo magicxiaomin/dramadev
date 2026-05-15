@@ -1,0 +1,80 @@
+# DramaDev GitHub label taxonomy.
+# Synced manually by .github/workflows/sync-labels.yml.
+- name: "status: needs-triage"
+  color: FBCA04
+  description: New issue or PR needs owner review and routing.
+- name: "status: ready-for-review"
+  color: 0E8A16
+  description: Ready for human review after local/CI gates pass.
+- name: "status: blocked"
+  color: B60205
+  description: Blocked by an unresolved dependency or decision.
+- name: "status: needs-info"
+  color: D93F0B
+  description: More information is required from the author.
+- name: "status: accepted"
+  color: 0E8A16
+  description: Meets acceptance criteria for the scoped change.
+- name: "type: bug"
+  color: D73A4A
+  description: Something is broken or regressed.
+- name: "type: feature"
+  color: A2EEEF
+  description: New or expanded user-facing behavior.
+- name: "type: chore"
+  color: C5DEF5
+  description: Maintenance, documentation, or tooling.
+- name: "type: governance"
+  color: 5319E7
+  description: Repository process, policy, or review workflow work.
+- name: "type: docs"
+  color: 0075CA
+  description: Documentation-only change.
+- name: "priority: p0"
+  color: B60205
+  description: Launch-critical P0 scope.
+- name: "priority: p1"
+  color: D93F0B
+  description: Important but not launch-blocking.
+- name: "priority: p2"
+  color: FBCA04
+  description: Follow-up or backlog work.
+- name: "area: frontend"
+  color: 1D76DB
+  description: Next.js app routes, components, styles, or UI copy.
+- name: "area: content"
+  color: BFDADC
+  description: Mock shows, scripts, thumbnails, copy, or content fixtures.
+- name: "area: acceptance"
+  color: C2E0C6
+  description: Acceptance scripts, manual QA, or runbook coverage.
+- name: "area: ci"
+  color: 5319E7
+  description: Continuous integration, labels, templates, or automation.
+- name: "area: docs"
+  color: 0075CA
+  description: Runbooks, policies, or repository documentation.
+- name: "risk: low"
+  color: C2E0C6
+  description: Documentation/metadata-only or isolated safe change.
+- name: "risk: medium"
+  color: FBCA04
+  description: App behavior changes requiring focused review.
+- name: "risk: high"
+  color: B60205
+  description: Broad, sensitive, or hard-to-roll-back change.
+- name: claude-approved
+  color: 0E8A16
+  description: Claude review gate parsed APPROVE.
+- name: claude-changes-requested
+  color: B60205
+  description: Claude review gate parsed REQUEST_CHANGES.
+- name: needs-human-review
+  color: D93F0B
+  description: Human review required before merge.
+- name: needs-human-merge
+  color: 5319E7
+  description: Automated gates passed; a human must merge.
+- name: needs-split
+  color: FBCA04
+  description: Diff exceeds preferred review size or scope.
