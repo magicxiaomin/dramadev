@@ -130,11 +130,18 @@ jobs:
             }
 
             const labelConfig = {
-              'claude-approved': { color: '0E8A16', description: 'NovelHub-style gate parsed APPROVE from Claude-backed review' },
-              'claude-changes-requested': { color: 'B60205', description: 'NovelHub-style gate parsed REQUEST_CHANGES' },
-              'needs-human-review': { color: 'D93F0B', description: 'Human review required before merge' },
+              'claude-approved': { color: '0E8A16', description: 'Compatibility alias for review:claude-approved' },
+              'claude-changes-requested': { color: 'B60205', description: 'Compatibility alias for review:claude-changes-requested' },
+              'needs-human-review': { color: 'D93F0B', description: 'Compatibility alias for review:needs-human-review' },
               'needs-human-merge': { color: '5319E7', description: 'Automated gates passed; human must merge' },
               'needs-split': { color: 'FBCA04', description: 'PR exceeds review-gate size threshold' },
+              'review:claude-approved': { color: '0E8A16', description: 'Claude review gate parsed APPROVE' },
+              'review:claude-changes-requested': { color: 'B60205', description: 'Claude review gate parsed REQUEST_CHANGES' },
+              'review:needs-human-review': { color: 'D93F0B', description: 'Human review required before merge' },
+              'status:approved': { color: '0E8A16', description: 'Review gate approved' },
+              'status:changes-requested': { color: 'B60205', description: 'Review or QA requested changes' },
+              'status:needs-review': { color: 'D93F0B', description: 'Needs independent review before QA/merge' },
+              'gate:human-required': { color: 'D93F0B', description: 'Human/admin approval required before merge or external action' },
             };
 
             for (const [name, config] of Object.entries(labelConfig)) {

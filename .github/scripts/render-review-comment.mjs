@@ -40,28 +40,41 @@ const deterministicFailures = hardStopCount > 0 || failedGates.length > 0;
 let decision;
 let machineState;
 let labelsToAdd;
-let labelsToRemove = ['claude-approved', 'claude-changes-requested', 'needs-human-review', 'needs-human-merge', 'needs-split'];
+let labelsToRemove = [
+  'claude-approved',
+  'claude-changes-requested',
+  'needs-human-review',
+  'needs-human-merge',
+  'needs-split',
+  'review:claude-approved',
+  'review:claude-changes-requested',
+  'review:needs-human-review',
+  'status:approved',
+  'status:changes-requested',
+  'status:needs-review',
+  'gate:human-required',
+];
 
 if (deterministicFailures) {
   decision = 'REQUEST_CHANGES';
   machineState = 'DETERMINISTIC_CHANGES_REQUESTED';
-  labelsToAdd = ['claude-changes-requested'];
+  labelsToAdd = ['claude-changes-requested', 'review:claude-changes-requested', 'status:changes-requested'];
 } else if (!hasClaudeSecret) {
   decision = 'REQUEST_CHANGES';
   machineState = 'NEEDS_HUMAN_REVIEW_CLAUDE_SECRET_MISSING';
-  labelsToAdd = ['needs-human-review'];
+  labelsToAdd = ['needs-human-review', 'review:needs-human-review', 'status:needs-review', 'gate:human-required'];
 } else if (claudeExitCode !== 0 || !claudeVerdict) {
   decision = 'REQUEST_CHANGES';
   machineState = 'NEEDS_HUMAN_REVIEW_CLAUDE_VERDICT_MISSING';
-  labelsToAdd = ['needs-human-review'];
+  labelsToAdd = ['needs-human-review', 'review:needs-human-review', 'status:needs-review', 'gate:human-required'];
 } else if (claudeVerdict === 'APPROVE') {
   decision = 'APPROVE';
   machineState = 'CLAUDE_APPROVED_NEEDS_HUMAN_MERGE';
-  labelsToAdd = ['claude-approved', 'needs-human-merge'];
+  labelsToAdd = ['claude-approved', 'review:claude-approved', 'status:approved', 'needs-human-merge'];
 } else {
   decision = 'REQUEST_CHANGES';
   machineState = 'CLAUDE_CHANGES_REQUESTED';
-  labelsToAdd = ['claude-changes-requested'];
+  labelsToAdd = ['claude-changes-requested', 'review:claude-changes-requested', 'status:changes-requested'];
 }
 
 if (checks.needsSplit) labelsToAdd.push('needs-split');
