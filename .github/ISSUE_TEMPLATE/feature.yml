@@ -1,0 +1,38 @@
+name: Feature request
+
+description: Propose a scoped DramaDev P0 feature or UI improvement.
+title: "[Feature]: "
+labels:
+  - "type: feature"
+  - "status: needs-triage"
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: What user need or P0 acceptance gap does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the smallest safe change that solves the problem.
+    validations:
+      required: true
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Guardrails
+      options:
+        - label: No backend/API route, payment, auth, database, Facebook/analytics, secret, or release-infra work is requested.
+          required: true
+        - label: Acceptance criteria can be verified locally or through a static preview.
+          required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: "- Given... when... then..."
+    validations:
+      required: true

@@ -1,0 +1,162 @@
+"type:docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**
+          - README.md
+          - acceptance/README.md
+
+"type:ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/**
+
+"type:test":
+  - changed-files:
+      - any-glob-to-any-file:
+          - acceptance/**
+          - "**/*.test.ts"
+          - "**/*.test.tsx"
+
+"type:feature":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/app/variant-b/**
+
+"area:docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**
+          - README.md
+
+"area:ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+          - .github/scripts/**
+
+"area:github-governance":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/**
+          - docs/github-review-pipeline.md
+          - docs/claude-code-review-process.md
+          - docs/branch-protection-recommendation.md
+          - docs/bot-identity.md
+          - docs/label-taxonomy.md
+          - docs/pr-labeling-policy.md
+
+"area:frontend":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/app/**
+          - src/components/**
+          - src/**/*.tsx
+          - src/**/*.css
+
+"area:routing":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/app/**/page.tsx
+          - src/lib/query-params.ts
+          - src/lib/query-params.test.ts
+
+"area:unlock-flow":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*unlock*"
+          - src/lib/lock.ts
+          - src/lib/lock.test.ts
+          - src/app/variant-b/watch/**
+
+"area:episode-sheet":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*episode-sheet*"
+          - src/lib/episode-sheet.ts
+          - src/lib/episode-sheet.test.ts
+
+"area:mock-data":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/data/**
+          - src/types/**
+
+"area:pwa":
+  - changed-files:
+      - any-glob-to-any-file:
+          - public/manifest.json
+          - src/app/layout.tsx
+          - src/app/globals.css
+
+"area:qa":
+  - changed-files:
+      - any-glob-to-any-file:
+          - acceptance/**
+          - docs/acceptance-runbook.md
+          - "**/*.test.ts"
+          - "**/*.test.tsx"
+
+"phase:P0":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/app/variant-b/**
+          - docs/moboreels/**
+          - acceptance/**
+
+"risk:low":
+  - changed-files:
+      - all-globs-to-all-files:
+          - docs/**
+          - .github/ISSUE_TEMPLATE/**
+          - .github/pull_request_template.md
+          - acceptance/README.md
+
+"risk:medium":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+          - .github/scripts/**
+          - package.json
+          - pnpm-lock.yaml
+
+"risk:high":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*payment*"
+          - "**/*stripe*"
+          - "**/*auth*"
+          - "**/*database*"
+          - "**/*facebook*"
+          - "**/*analytics*"
+          - "**/*deploy*"
+          - "**/*secret*"
+          - src/app/api/**
+
+"gate:human-required":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/app/api/**
+          - prisma/**
+          - migrations/**
+          - vercel.json
+          - netlify.toml
+          - "**/*payment*"
+          - "**/*auth*"
+          - "**/*facebook*"
+          - "**/*analytics*"
+          - "**/*secret*"
+
+"acceptance:script-present":
+  - changed-files:
+      - any-glob-to-any-file:
+          - acceptance/**
+
+"agent:github-actions":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+
+"agent:dramapm":
+  - head-branch:
+      - ^feat/p0-
+      - ^ci/

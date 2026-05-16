@@ -1,0 +1,182 @@
+# DramaDev GitHub label taxonomy.
+# Synced by .github/workflows/sync-labels.yml with skip-delete/delete-other-labels disabled.
+# Mirrors NovelHub-style governance while preserving DramaDev P0 frontend-only boundaries.
+
+# Agent
+- name: "agent:dramapm"
+  color: "5319E7"
+  description: Main Hermes PM/orchestrator ownership.
+- name: "agent:claude-code"
+  color: "6F42C1"
+  description: Claude Code role or review gate signal.
+- name: "agent:codex"
+  color: "1D76DB"
+  description: Hermes default Codex role ownership.
+- name: "agent:github-actions"
+  color: "0E8A16"
+  description: github-actions[bot] workflow automation.
+
+# Status
+- name: "status:needs-plan"
+  color: "FBCA04"
+  description: Needs requirements, architecture, or implementation plan.
+- name: "status:plan-ready"
+  color: "C2E0C6"
+  description: Plan exists and is ready for implementation.
+- name: "status:needs-review"
+  color: "D93F0B"
+  description: Needs independent review before QA/merge.
+- name: "status:changes-requested"
+  color: "B60205"
+  description: Review or QA requested changes.
+- name: "status:approved"
+  color: "0E8A16"
+  description: Review gate approved.
+- name: "status:ready-for-qa"
+  color: "1D76DB"
+  description: Ready for QA validation.
+- name: "status:qa-green"
+  color: "0E8A16"
+  description: QA passed.
+- name: "status:qa-yellow"
+  color: "FBCA04"
+  description: QA passed with caveats or follow-ups.
+- name: "status:qa-red"
+  color: "B60205"
+  description: QA failed or blocks merge.
+- name: "status:blocked"
+  color: "B60205"
+  description: Blocked by external decision, credentials, or unresolved gate.
+
+# Type
+- name: "type:feature"
+  color: "A2EEEF"
+  description: New or expanded user-facing behavior.
+- name: "type:bug"
+  color: "D73A4A"
+  description: Something is broken or regressed.
+- name: "type:docs"
+  color: "0075CA"
+  description: Documentation-only change.
+- name: "type:ci"
+  color: "5319E7"
+  description: CI, workflows, labels, templates, or GitHub automation.
+- name: "type:test"
+  color: "C2E0C6"
+  description: Acceptance, smoke, unit, or QA tests.
+- name: "type:chore"
+  color: "C5DEF5"
+  description: Maintenance or housekeeping.
+- name: "type:governance"
+  color: "5319E7"
+  description: Repository process, policy, or review workflow work.
+
+# Area
+- name: "area:frontend"
+  color: "1D76DB"
+  description: Next.js app routes, components, styles, or UI copy.
+- name: "area:routing"
+  color: "1D76DB"
+  description: Route/query-param behavior and navigation context.
+- name: "area:unlock-flow"
+  color: "D4C5F9"
+  description: Lock detection, unlock drawer, and mock unlock flow.
+- name: "area:episode-sheet"
+  color: "BFDADC"
+  description: Episode list/sheet UX.
+- name: "area:mock-data"
+  color: "C2E0C6"
+  description: Static/mock drama fixtures and client-only data.
+- name: "area:pwa"
+  color: "F9D0C4"
+  description: PWA shell, install prompt, and mobile safe-area behavior.
+- name: "area:qa"
+  color: "C2E0C6"
+  description: QA evidence, smoke, acceptance, and test runbooks.
+- name: "area:docs"
+  color: "0075CA"
+  description: Product, governance, or runbook documentation.
+- name: "area:ci"
+  color: "5319E7"
+  description: Continuous integration and workflow automation.
+- name: "area:infra"
+  color: "FBCA04"
+  description: Repo tooling or infrastructure-adjacent work; production infra is P0-blocked.
+- name: "area:github-governance"
+  color: "5319E7"
+  description: GitHub labels, templates, bots, review gates, and branch-policy docs.
+
+# Risk
+- name: "risk:low"
+  color: "C2E0C6"
+  description: Documentation/metadata-only or isolated safe change.
+- name: "risk:medium"
+  color: "FBCA04"
+  description: App behavior, CI, or governance change requiring focused review.
+- name: "risk:high"
+  color: "B60205"
+  description: Sensitive or broad change requiring human gate.
+
+# Gate
+- name: "gate:auto-allowed"
+  color: "0E8A16"
+  description: Eligible for automated status/label progression; not auto-merge by default.
+- name: "gate:human-required"
+  color: "D93F0B"
+  description: Human/admin approval required before merge or external action.
+- name: "gate:blocked"
+  color: "B60205"
+  description: Merge/progress blocked by unresolved gate.
+
+# Phase
+- name: "phase:P0"
+  color: "B60205"
+  description: Launch-critical P0 frontend prototype scope.
+- name: "phase:P1"
+  color: "D93F0B"
+  description: Follow-up after P0.
+- name: "phase:P2"
+  color: "FBCA04"
+  description: Later backlog/future phase.
+
+# Review
+- name: "review:claude-approved"
+  color: "0E8A16"
+  description: Claude review gate parsed APPROVE.
+- name: "review:claude-changes-requested"
+  color: "B60205"
+  description: Claude review gate parsed REQUEST_CHANGES.
+- name: "review:needs-human-review"
+  color: "D93F0B"
+  description: Human review required before merge.
+
+# Acceptance
+- name: "acceptance:script-required"
+  color: "D93F0B"
+  description: A mechanical acceptance/smoke script is required.
+- name: "acceptance:script-present"
+  color: "C2E0C6"
+  description: Acceptance/smoke script exists.
+- name: "acceptance:script-passed"
+  color: "0E8A16"
+  description: Acceptance/smoke script passed.
+- name: "acceptance:script-failed"
+  color: "B60205"
+  description: Acceptance/smoke script failed.
+
+# Compatibility aliases used by the initial NovelHub-style review gate scaffold.
+- name: "claude-approved"
+  color: "0E8A16"
+  description: Compatibility alias for review:claude-approved.
+- name: "claude-changes-requested"
+  color: "B60205"
+  description: Compatibility alias for review:claude-changes-requested.
+- name: "needs-human-review"
+  color: "D93F0B"
+  description: Compatibility alias for review:needs-human-review.
+- name: "needs-human-merge"
+  color: "5319E7"
+  description: Automated gates passed; a human must merge.
+- name: "needs-split"
+  color: "FBCA04"
+  description: Diff exceeds preferred review size or scope.
