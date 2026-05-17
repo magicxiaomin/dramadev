@@ -1,6 +1,8 @@
 # Phase 3 Mock Data Freeze
 
-Linked task: PHASE3-005 (`t_89fae098`)
+Linked task: PHASE3-006 (`t_43bdc557`)
+
+Parent/audit task: PHASE3-005 (`t_89fae098`)
 
 Source of truth: `docs/moboreels/scene-flow-facebook-ad-conversion-prd.md`
 
@@ -27,12 +29,14 @@ No real payment, subscription, login, Facebook API, analytics, backend, database
 | --- | --- |
 | Story id | `midnight-lantern-oath` |
 | Story title | `Midnight Lantern Oath` |
+| Logline | `A guarded heiress follows a hidden oath through one house of secrets, debts, and shifting loyalties.` |
 | Total episodes | `36` |
 | Free episodes | `5` |
 | First locked episode | `6` |
 | Episode ranges | `1-24`, `25-36` |
 | Default mock balance | `80 coins` |
 | Mock cost per episode | `36 coins` |
+| Mock Story Pass display price | `120 coins` |
 | Default drawer balance variant | `default-balance` / `80 coins` |
 | Low-balance drawer check variant | `low-balance-drawer-check` / `12 coins` |
 
@@ -88,12 +92,32 @@ PRD §8.4 example alignment:
 
 ## Secondary stub stories
 
-The fixture also contains secondary original static stubs for non-P0 discovery surfaces. They are not part of the P0 Facebook ad conversion route and were not changed.
+The fixture also contains secondary original static stubs for non-P0 discovery surfaces. They are not part of the P0 Facebook ad conversion route and are frozen here only so future acceptance work can detect accidental drift.
 
-| Story id | Title | Purpose |
+| Story id | Title | Episodes | Free episodes | First locked | Balance | Cost / EP | Purpose |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `harbor-of-second-chances` | Harbor of Second Chances | 18 | 3 | 4 | 40 coins | 24 coins | Secondary Home/Search/Browse preview stub only |
+| `paper-crown-protocol` | Paper Crown Protocol | 12 | 2 | 3 | 30 coins | 20 coins | Secondary discovery preview stub only |
+
+## Frozen cost surfaces
+
+| Surface | Frozen value | Notes |
 | --- | --- | --- |
-| `harbor-of-second-chances` | Harbor of Second Chances | Secondary Home/Search/Browse preview stub only |
-| `paper-crown-protocol` | Paper Crown Protocol | Secondary discovery preview stub only |
+| Unlock Drawer balance | `80 coins` | Primary P0 default state; enough for one mock single-episode unlock. |
+| Unlock Drawer cost | `36 coins` | Used for `Unlock EP X` and Episode Sheet locked labels. |
+| Low-balance wallet variant | `12 coins` | Fixture-only alternate balance for insufficient-balance drawer checks. |
+| Pass page single-episode option | `36 coins` | Mirrors `mockCostPerEpisode` and returns to `unlocked=1`. |
+| Pass page Story Pass option | `120 coins` | Static mock display price only; not a subscription, not auto-renewing, no processor connected. |
+| Pass page coin pack | `Mock coin pack` | Placeholder copy only; no numeric pack value or local price is frozen. |
+
+## Drift risks to flag before stakeholder acceptance
+
+- Changing `freeEpisodes`, `firstLockedEpisode`, or the episode list can move the first lock away from EP 6 and invalidate PRD §8.4 screenshots/checklist evidence.
+- Changing `mockBalance`, `mockCostPerEpisode`, or the `Mock Story Pass · 120 coins` copy can desync the Watch, Unlock Drawer, Episode Sheet, Pass page, and this freeze reference.
+- Adding or renaming stories can look like new creative direction or brand-significant content; Phase 3 only permits original static mock data and typo/off-spec-copy fixes.
+- Replacing the original fixture titles/hooks with licensed, competitor-derived, or real show assets is out of scope and must be escalated.
+- Wiring any value to real payment, subscription, login, Facebook API, analytics, backend, database, video, or entitlement infrastructure would violate Phase 3 hard stops.
+- Acceptance screenshots and checklist rows should be regenerated or marked stale if any frozen value above changes.
 
 ## Audit result
 
