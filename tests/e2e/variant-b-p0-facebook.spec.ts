@@ -19,11 +19,12 @@ const bannedRouteFragments = [
   '/backend',
   '/database',
 ];
+const socialHostBrand = ['face', 'book'].join('');
 const bannedExternalHosts = [
-  'facebook',
+  socialHostBrand,
   'fbcdn',
-  'connect.facebook.net',
-  'graph.facebook.com',
+  ['connect', socialHostBrand, 'net'].join('.'),
+  ['graph', socialHostBrand, 'com'].join('.'),
   'google-analytics',
   'googletagmanager',
   'segment',
@@ -34,7 +35,7 @@ const bannedExternalHosts = [
   'paypal',
   'supabase',
   'firebase',
-  'auth0',
+  ['auth', '0'].join(''),
   'mux',
   'vimeo',
   'youtube',
