@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { SceneFlowShow } from '@/types/scene-flow';
+import { formatMockDrawerBalanceLabel, formatMockDrawerCostLabel } from '@/lib/drawer-mock-balance';
 import { buildEpisodeSheetItems } from '@/lib/episode-sheet';
 import { findEpisodeRange } from '@/lib/episode-range';
 import { getEpisodeLockState } from '@/lib/lock';
@@ -327,11 +328,11 @@ export function WatchStub({ show }: { show: SceneFlowShow }) {
 
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-2xl bg-white/[0.08] p-3" data-testid="unlock-drawer-balance">
-              <p className="text-scene-muted">Balance</p>
+              <p className="text-scene-muted">{formatMockDrawerBalanceLabel()}</p>
               <p className="mt-1 text-xl font-black">{show.mockBalance} coins</p>
             </div>
             <div className="rounded-2xl bg-white/[0.08] p-3" data-testid="unlock-drawer-cost">
-              <p className="text-scene-muted">Cost</p>
+              <p className="text-scene-muted">{formatMockDrawerCostLabel()}</p>
               <p className="mt-1 text-xl font-black">{show.mockCostPerEpisode} coins</p>
             </div>
           </div>
