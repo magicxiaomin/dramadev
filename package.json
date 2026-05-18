@@ -8,6 +8,7 @@
     "build": "next build",
     "lint": "next lint",
     "test:unit": "vitest run",
+    "test:e2e:p0": "playwright test tests/e2e/variant-b-p0-facebook.spec.ts --project=p0-mobile-390x844",
     "check:banned-deps": "node banned-dependency check"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.41.2",
     "@types/node": "22.10.2",
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
