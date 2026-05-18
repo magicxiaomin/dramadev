@@ -1,6 +1,6 @@
 # Phase 4G QA Readiness Checklist
 
-Status: docs-only, fake-only. This checklist prepares human reviewers for PR #19 and PR #20; it does not replace their review and does not authorize automated merge.
+Status: docs-only, fake-only. This checklist was drafted for PR #19 and stale PR #20; current automated harness cross-checks should use merged clean replacement PR #23. It does not replace human review and does not authorize automated merge.
 
 ## P0 invariant
 
@@ -24,13 +24,13 @@ Minimum manual pass matrix:
 | Browser | Viewport | Required? | Notes |
 | --- | --- | --- | --- |
 | Mobile Safari or WebKit equivalent | 390 x 844 | Yes | Primary mobile PWA target; verify safe area and bottom drawer CTA visibility. |
-| Chrome mobile emulation | 390 x 844 | Yes | Fast reviewer baseline; compare with PR #20 Playwright expectations where available. |
+| Chrome mobile emulation | 390 x 844 | Yes | Fast reviewer baseline; compare with PR #23 Playwright expectations where available. |
 | Desktop Chrome responsive mode | 390 x 844 | Yes | Useful for console/network evidence capture. |
 | Desktop wide viewport | 1280 x 720 | Optional | Only to verify no catastrophic layout break; P0 acceptance remains mobile-first. |
 
 ## Manual P0 checklist
 
-Map each item to PRD section 15 and, after PR #20 lands, to the automated Playwright P0 harness coverage.
+Map each item to PRD section 15 and to the automated Playwright P0 harness coverage from merged PR #23.
 
 ### 1. Facebook source landing
 
@@ -86,11 +86,11 @@ Map each item to PRD section 15 and, after PR #20 lands, to the automated Playwr
 - [ ] Copy is clearly mock/fake and does not represent real subscription terms.
 - [ ] No real payment, subscription, login, entitlement, backend, or database call is made.
 
-### 7. PR #20 automated harness alignment
+### 7. PR #23 automated harness alignment
 
-After PR #20 is available on the review branch:
+Using merged PR #23 as the clean replacement for stale PR #20:
 
-- [ ] Identify the Playwright P0 spec(s) added by PR #20.
+- [ ] Identify the Playwright P0 spec(s) added by PR #23.
 - [ ] Confirm the automated route starts at `/variant-b/watch/[showId]?episode=1&source=facebook` or an equivalent source-preserving helper.
 - [ ] Confirm the harness verifies free-preview-before-prompts behavior.
 - [ ] Confirm the harness reaches the first locked episode.
@@ -103,6 +103,6 @@ After PR #20 is available on the review branch:
 Ready for human merge consideration only when:
 
 - PR #19 has been reviewed first for callback/query contract correctness.
-- PR #20 has been reviewed against PR #19's contract and the PRD invariant.
+- PR #23 has been reviewed against PR #19's contract and the PRD invariant.
 - Manual evidence covers the P0 path above on the primary 390 x 844 viewport.
 - Any out-of-P0 items are tracked in `known-gaps.md` or later planning, not silently accepted as Phase 4G work.
