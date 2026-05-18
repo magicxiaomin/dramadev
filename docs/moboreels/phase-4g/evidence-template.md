@@ -1,6 +1,6 @@
 # Phase 4G P0 Evidence Template
 
-Use this template during human review of PR #19 and PR #20. Keep evidence fake-only. Do not paste secrets, tokens, private user data, real payment identifiers, real Facebook IDs, or production service data.
+Use this template during human review of PR #19 and the merged clean replacement harness PR #23. Keep evidence fake-only. Do not paste secrets, tokens, private user data, real payment identifiers, real Facebook IDs, or production service data.
 
 Reviewer:
 Branch / PR:
@@ -170,7 +170,7 @@ Evidence:
 - Network observations, fake-only:
 - Notes:
 
-## 7. PR #20 Playwright cross-check
+## 7. PR #23 Playwright cross-check
 
 Playwright command or CI link:
 
@@ -191,7 +191,7 @@ Notes:
 ## 8. Final reviewer assessment
 
 - [ ] P0 invariant passes manually.
-- [ ] PR #20 harness aligns with manual P0 path.
+- [ ] PR #23 harness aligns with manual P0 path.
 - [ ] No real-service behavior observed.
 - [ ] No hard-stop scope crossed.
 - [ ] Gaps or follow-ups are listed separately and not treated as Phase 4G scope.

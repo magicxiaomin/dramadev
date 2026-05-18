@@ -2,14 +2,14 @@
 
 Status: docs-only, fake-only planning package.
 
-This package supports human review of the SceneFlow P0 Facebook ad conversion flow while PR #19 and PR #20 are still awaiting human review/merge. It does not merge, approve, rebase, force-push, or otherwise alter PR #19 (`feat/phase4e-callback-query-contract`) or PR #20 (`feat/phase4f-p0-playwright-harness`).
+This package was originally drafted while PR #19 and the now-closed stale harness PR #20 were awaiting human review/merge. Current harness evidence should use the merged clean replacement PR #23 (`feat/phase4f-p0-playwright-harness-clean2`). This docs package does not merge, approve, rebase, force-push, or otherwise alter PR #19, PR #20, or PR #23.
 
 Source of truth:
 
 - `docs/moboreels/scene-flow-facebook-ad-conversion-prd.md`
 - `docs/moboreels/prototype-b-spec.md`
 - PR #19: https://github.com/magicxiaomin/dramadev/pull/19
-- PR #20: https://github.com/magicxiaomin/dramadev/pull/20
+- PR #23 (merged clean replacement for stale PR #20): https://github.com/magicxiaomin/dramadev/pull/23
 - Requirements advice: `/tmp/phase4g_requirements_advice.md`
 
 P0 invariant for review:
@@ -28,7 +28,7 @@ Recommended reading order:
 1. `qa-readiness.md` - manual P0 QA checklist and browser/viewport matrix.
 2. `evidence-template.md` - fill-in template for reviewer evidence.
 3. `known-gaps.md` - explicit out-of-P0 and not-Phase-4G gaps.
-4. `merge-order.md` - recommended human review/merge order for PR #19 then PR #20.
+4. `merge-order.md` - historical merge-order guidance, now reconciled to the merged PR #23 harness replacement.
 5. `phase-5-questions.md` - questions only for later planning; no commitments.
 
 Phase 4G boundaries:
