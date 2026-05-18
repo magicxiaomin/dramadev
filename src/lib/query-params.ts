@@ -1,12 +1,34 @@
+import {
+  ATTRIBUTION_KEYS_PHASE4D,
+  parseAttributionValue,
+  parseAuthResult,
+  parseDrawerIntent,
+  parseDrawerVariant,
+  parseFakeUser,
+  parseEpisodeValue,
+  parseUnlockedFlag,
+  type AttributionKey,
+  type AuthResult,
+  type DrawerIntent,
+  type DrawerVariant,
+  type PurchaseStatus,
+  parsePurchaseStatus,
+} from './callback-keys';
+
 export type QueryParamValue = string | string[] | undefined;
 export type QueryParams = Record<string, QueryParamValue>;
 
-export type AttributionParams = Partial<Record<(typeof ATTRIBUTION_KEYS)[number], string>>;
+export type AttributionParams = Partial<Record<AttributionKey, string>>;
 
 export type ParsedWatchQueryParams = {
   episode: number;
   unlocked: boolean;
   attribution: AttributionParams;
+  purchaseStatus?: PurchaseStatus;
+  authResult?: AuthResult;
+  drawer?: DrawerVariant;
+  drawerIntent?: DrawerIntent;
+  fakeUser?: string;
 };
 
 export type ParsedPassQueryParams = {
@@ -14,18 +36,6 @@ export type ParsedPassQueryParams = {
   episode: number;
   attribution: AttributionParams;
 };
-
-export const ATTRIBUTION_KEYS = [
-  'source',
-  'campaign_id',
-  'adset_id',
-  'ad_id',
-  'creative_id',
-  'placement',
-  'utm_source',
-  'utm_campaign',
-  'utm_content',
-] as const;
 
 function firstValue(value: QueryParamValue): string | undefined {
   if (Array.isArray(value)) {
@@ -36,32 +46,51 @@ function firstValue(value: QueryParamValue): string | undefined {
 }
 
 export function clampEpisode(value: QueryParamValue, totalEpisodes: number): number {
-  const rawEpisode = firstValue(value);
-  const parsedEpisode = rawEpisode ? Number.parseInt(rawEpisode, 10) : 1;
+  const parsedEpisode = parseEpisodeValue(value) ?? 1;
   const safeTotal = Number.isFinite(totalEpisodes) && totalEpisodes > 0 ? Math.floor(totalEpisodes) : 1;
-
-  if (!Number.isFinite(parsedEpisode) || parsedEpisode < 1) {
-    return 1;
-  }
 
   return Math.min(parsedEpisode, safeTotal);
 }
 
-export function parseWatchQueryParams(params: QueryParams, totalEpisodes: number): ParsedWatchQueryParams {
+function parseAttribution(params: QueryParams): AttributionParams {
   const attribution: AttributionParams = {};
 
-  for (const key of ATTRIBUTION_KEYS) {
-    const value = firstValue(params[key]);
-    if (value) {
+  for (const key of ATTRIBUTION_KEYS_PHASE4D) {
+    const value = parseAttributionValue(params[key]);
+    if (value !== undefined) {
       attribution[key] = value;
     }
   }
 
+  return attribution;
+}
+
+function withOptionalWatchCallbacks(parsed: ParsedWatchQueryParams, params: QueryParams): ParsedWatchQueryParams {
+  const purchaseStatus = parsePurchaseStatus(params.purchase_status);
+  const authResult = parseAuthResult(params.auth_result);
+  const drawer = parseDrawerVariant(params.drawer);
+  const drawerIntent = parseDrawerIntent(params.drawer_intent);
+  const fakeUser = parseFakeUser(params.fake_user);
+
   return {
-    episode: clampEpisode(params.episode, totalEpisodes),
-    unlocked: firstValue(params.unlocked) === '1',
-    attribution,
+    ...parsed,
+    ...(purchaseStatus !== undefined ? { purchaseStatus } : {}),
+    ...(authResult !== undefined ? { authResult } : {}),
+    ...(drawer !== undefined ? { drawer } : {}),
+    ...(drawerIntent !== undefined ? { drawerIntent } : {}),
+    ...(fakeUser !== undefined ? { fakeUser } : {}),
   };
+}
+
+export function parseWatchQueryParams(params: QueryParams, totalEpisodes: number): ParsedWatchQueryParams {
+  return withOptionalWatchCallbacks(
+    {
+      episode: clampEpisode(params.episode, totalEpisodes),
+      unlocked: parseUnlockedFlag(params.unlocked),
+      attribution: parseAttribution(params),
+    },
+    params,
+  );
 }
 
 export type BuildWatchEpisodeHrefInput = {
@@ -71,15 +100,18 @@ export type BuildWatchEpisodeHrefInput = {
   unlocked?: boolean;
 };
 
-export function buildWatchEpisodeHref({ showId, episode, attribution = {}, unlocked = false }: BuildWatchEpisodeHrefInput): string {
-  const params = new URLSearchParams({ episode: String(episode) });
-
-  for (const key of ATTRIBUTION_KEYS) {
-    const value = attribution[key];
-    if (value) {
+function appendAttributionParams(params: URLSearchParams, attribution: AttributionParams): void {
+  for (const key of ATTRIBUTION_KEYS_PHASE4D) {
+    const value = parseAttributionValue(attribution[key]);
+    if (value !== undefined) {
       params.set(key, value);
     }
   }
+}
+
+export function buildWatchEpisodeHref({ showId, episode, attribution = {}, unlocked = false }: BuildWatchEpisodeHrefInput): string {
+  const params = new URLSearchParams({ episode: String(episode) });
+  appendAttributionParams(params, attribution);
 
   if (unlocked) {
     params.set('unlocked', '1');
@@ -93,15 +125,6 @@ export type BuildPassHrefInput = {
   episode: number;
   attribution?: AttributionParams;
 };
-
-function appendAttributionParams(params: URLSearchParams, attribution: AttributionParams): void {
-  for (const key of ATTRIBUTION_KEYS) {
-    const value = attribution[key];
-    if (value) {
-      params.set(key, value);
-    }
-  }
-}
 
 export function buildPassHref({ showId, episode, attribution = {} }: BuildPassHrefInput): string {
   const params = new URLSearchParams({ story: showId, episode: String(episode) });
@@ -126,18 +149,9 @@ export function buildShowDetailHref({ showId, episode, attribution = {} }: Build
 }
 
 export function parsePassQueryParams(params: QueryParams, totalEpisodes: number): ParsedPassQueryParams {
-  const attribution: AttributionParams = {};
-
-  for (const key of ATTRIBUTION_KEYS) {
-    const value = firstValue(params[key]);
-    if (value) {
-      attribution[key] = value;
-    }
-  }
-
   return {
     story: firstValue(params.story),
     episode: clampEpisode(params.episode, totalEpisodes),
-    attribution,
+    attribution: parseAttribution(params),
   };
 }
