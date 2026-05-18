@@ -39,3 +39,8 @@ jobs:
         run: pnpm lint
       - name: Build
         run: pnpm build
+      - name: Advisory P0 browser regression (fake-only)
+        continue-on-error: true
+        run: |
+          pnpm exec playwright install chromium
+          pnpm test:e2e:p0
