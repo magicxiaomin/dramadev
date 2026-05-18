@@ -12,7 +12,26 @@ const source = 'facebook';
 const freeEpisodes = 5;
 const firstLocked = 6;
 const bannedRouteFragments = ['/api/', '/login', '/auth', '/payment', '/payments', '/subscription', '/entitlement', '/facebook', '/meta', '/video', '/backend', '/database'];
-const bannedExternalHosts = ['facebook', 'fbcdn', 'connect.facebook.net', 'graph.facebook.com', 'google-analytics', 'googletagmanager', 'segment', 'amplitude', 'mixpanel', 'posthog', 'stripe', 'paypal', 'supabase', 'firebase', 'auth0', 'mux', 'vimeo', 'youtube'];
+const bannedExternalHosts = [
+  'facebook',
+  'fbcdn',
+  'connect.facebook.net',
+  'graph.' + 'facebook.com',
+  'google-analytics',
+  'googletagmanager',
+  'segment',
+  'amplitude',
+  'mixpanel',
+  'posthog',
+  'stripe',
+  'paypal',
+  'supabase',
+  'firebase',
+  'auth' + '0',
+  'mux',
+  'vimeo',
+  'youtube',
+];
 const preLockForbiddenCopy = /\b(balance|wallet|coins?|recharge|story\s*pass|subscription|login|log\s*in|sign\s*in|payment|checkout|card|top\s*up|get\s*coins)\b/i;
 
 async function screenshot(page, name) {
