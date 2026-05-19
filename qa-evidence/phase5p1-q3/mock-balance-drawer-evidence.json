@@ -1,0 +1,50 @@
+{
+  "verdict": "PASS",
+  "viewport": "390x844, chromium mobile context, deviceScaleFactor=3",
+  "baseURL": "http://127.0.0.1:4175",
+  "evidence": [
+    {
+      "name": "EP1 free landing no pre-lock monetization",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/01-ep1-free-no-prelock-balance.png"
+    },
+    {
+      "name": "EP1 Episode Sheet header clean and locked-row cost helper preserved",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/02-ep1-episode-sheet-cost-helper.png"
+    },
+    {
+      "name": "EP5 last free episode no pre-lock monetization",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/03-ep5-last-free-no-prelock-balance.png"
+    },
+    {
+      "name": "EP6 first locked drawer with fake drawer-only balance/cost and CTA hierarchy",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/04-ep6-first-lock-drawer-fake-balance-cost.png"
+    },
+    {
+      "name": "EP6 drawer close stays same locked episode",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/05-ep6-drawer-closed-same-locked-episode.png"
+    },
+    {
+      "name": "EP6 locked playback tap reopens drawer",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/06-ep6-reopened-from-locked-playback.png"
+    },
+    {
+      "name": "EP6 fake unlock returns same episode with source and unlocked=1",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/07-ep6-post-fake-unlock-same-episode-source.png"
+    },
+    {
+      "name": "Story Pass page preserves story episode source and mock return href",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/08-story-pass-context-and-return.png"
+    },
+    {
+      "name": "Story Pass mock return lands same episode with unlocked=1",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/09-story-pass-return-same-unlocked-episode.png"
+    },
+    {
+      "name": "Direct later locked EP7 still drawer-only mock balance/cost",
+      "path": "/root/projects/dramadev/qa-evidence/phase5p1-q3/screenshots/10-ep7-direct-later-locked-drawer-only.png"
+    }
+  ],
+  "blockedRequests": [],
+  "consoleMessages": [],
+  "note": "Default fixture has sufficient mock balance, so runtime primary CTA is Unlock EP 6. Insufficient Get coins to unlock branch exists in watch-stub conditional but is not route-selectable without code changes."
+}
