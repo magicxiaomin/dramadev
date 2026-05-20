@@ -69,7 +69,7 @@ Canonical flow:
    - [ ] Mock balance: `80 coins`.
    - [ ] Mock cost: `36 coins`.
    - [ ] Primary CTA: `Unlock EP 6`.
-   - [ ] Secondary CTA: `Get Story Pass`.
+   - [ ] Secondary CTA: `Get Story Pass (mock)`.
    - [ ] Close/tertiary action such as `Maybe later`.
    - [ ] Copy indicates mock unlock returns to the same episode with `unlocked=1`.
    - [ ] No real wallet, payment, subscription, backend, database, entitlement, login, analytics, or Facebook integration is implied.
@@ -91,7 +91,7 @@ Canonical flow:
 
 6. Story Pass mock round trip
 
-   Start from locked EP6 drawer, click `Get Story Pass`:
+   Start from locked EP6 drawer, click `Get Story Pass (mock)`:
 
    ```txt
    /variant-b/pass?story=midnight-lantern-oath&episode=6&source=facebook

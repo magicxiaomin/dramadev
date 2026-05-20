@@ -43,7 +43,7 @@ Unlock Drawer expected state:
 - Mock balance: `80 coins`
 - Mock single-episode cost: `36 coins`
 - Primary CTA: `Unlock EP 6`
-- Secondary CTA: `Get Story Pass`
+- Secondary CTA: `Get Story Pass (mock)`
 - Tertiary/close CTA: `Maybe later` or close control
 - Return copy says mock unlock returns to the same episode with `unlocked=1`
 

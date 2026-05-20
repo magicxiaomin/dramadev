@@ -28,7 +28,7 @@
 
 4. 到达 EP6 第一个锁集。
 
-   说明：EP6 自动进入 locked 状态并打开 Unlock Drawer。Drawer 展示当前剧名、EP6、mock 余额 `80 coins`、单集 mock 成本 `36 coins`、主按钮 `Unlock EP 6`、次按钮 `Get Story Pass`，并说明 mock 解锁会回到当前集。
+   说明：EP6 自动进入 locked 状态并打开 Unlock Drawer。Drawer 展示当前剧名、EP6、mock 余额 `80 coins`、单集 mock 成本 `36 coins`、主按钮 `Unlock EP 6`、次按钮 `Get Story Pass (mock)`，并说明 mock 解锁会回到当前集。
 
 5. 关闭 Drawer，再点击锁定播放区域重新打开。
 
@@ -46,7 +46,7 @@
 
 7. 演示 Story Pass fake 往返。
 
-   说明：回到 EP6 锁定 Drawer，点击 `Get Story Pass` 进入 mock pass 页：
+   说明：回到 EP6 锁定 Drawer，点击 `Get Story Pass (mock)` 进入 mock pass 页：
 
    ```txt
    /variant-b/pass?story=midnight-lantern-oath&episode=6&source=facebook
