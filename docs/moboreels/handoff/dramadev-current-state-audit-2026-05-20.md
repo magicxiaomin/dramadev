@@ -156,7 +156,7 @@ Implication: autonomous work is currently at an empty-board reconciliation point
 
 ## 6. Watchdog state
 
-Watchdog job:
+Watchdog job reverified after PR #42 reviewer follow-up:
 
 ```txt
 job_id: 35125c1121cd
@@ -166,11 +166,16 @@ schedule: every 15m
 repeat: forever
 deliver: origin
 script: dramadev_watchdog.sh
+script_path: /root/.hermes/profiles/dramapm/scripts/dramadev_watchdog.sh
 workdir: /root/projects/dramadev
 last_status: ok
-last_run_at: 2026-05-20T13:53:49.355464+00:00
-next_run_at: 2026-05-20T14:08:49.355464+00:00
+last_delivery_error: null
+last_run_at: 2026-05-20T14:15:01.906260+00:00
+next_run_at: 2026-05-20T14:30:01.906260+00:00
+verification: cronjob(action=list) and `hermes cron list` both show the same active job; `hermes cron run 35125c1121cd` was triggered and the scheduler recorded a fresh ok run.
 ```
+
+Incident note: the PR #42 reviewer observed a temporary scheduler inconsistency where both `cronjob(action=list)` and `hermes cron list` returned no jobs. Current recovery evidence shows the original job id is present again, enabled, and scheduled; no duplicate watchdog was created.
 
 User expectation: keep the watchdog active until explicitly stopped. Empty Kanban / all PRs merged is **not** a reason to pause or remove it. If it ever pauses/stops, immediately list cron jobs, resume/recreate it, run once, verify next scheduled run, and report the incident.
 
